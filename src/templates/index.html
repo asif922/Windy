@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <title>Windy</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body class="page-body">
+
+  <div class="main-container">
+
+    <!-- Header -->
+    <header class="site-header">
+      <div class="header-left"></div>
+      <h1 class="header-title">WINDY</h1>
+      <div class="header-right">
+        <nav class="nav-bar">
+          <a href="{{ url_for('index') }}" class="nav-link active">Home</a>
+          <a href="{{ url_for('dashboard') }}" class="nav-link">Dashboard</a>
+          <a href="{{ url_for('logs') }}" class="nav-link">Logs</a>
+        </nav>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container">
+      <h2 class="section-title">Your personal weather logger</h2>
+      <p class="section-description">Live temperature & humidity from your location.</p>
+
+      <!-- Quick Stats -->
+      <section class="quick-stats">
+        <h3 class="stats-title">Quick Stats</h3>
+        <div class="weather-info">
+          <p>🌡️ Temperature: <span id="temperature">--</span></p>
+          <p>💧 Humidity: <span id="humidity">--</span></p>
+        </div>
+      </section>
+    </main>
+
+  </div>
+
+  <!-- External JS -->
+  <script src="{{ url_for('static', filename='js/index.js') }}"></script>
+</body>
+</html>

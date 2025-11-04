@@ -1,0 +1,55 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Windy</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class ="page-body">
+
+  <div class="main-container">
+    
+    <!-- Header -->
+   <header class="site-header">
+      <div class="header-left"></div>
+      <h1 class="header-title">WINDY</h1>
+      <div class="header-right">
+        <nav class="nav-bar">
+          <a href="{{ url_for('index') }}" class="nav-link">Home</a>
+          <a href="{{ url_for('dashboard') }}" class="nav-link active">Dashboard</a>
+          <a href="{{ url_for('logs') }}" class="nav-link">Logs</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="container">
+     <h2>Fetch Weather by City</h2>
+     <div class="row">
+       <input id="cityInput" placeholder="Enter city (e.g. Kolkata)" />
+       <button id="fetchBtn">Get Weather</button>
+     </div>
+
+     <section class="card">
+       <h3>Latest Reading</h3>
+       <p>City: <span id="city">--</span></p>
+       <p>Temperature: <span id="temp">--</span>°C</p>
+       <p>Humidity: <span id="humidity">--</span>%</p>
+       <p>Pressure: <span id="pressure">--</span> hPa</p>
+       <p>Wind: <span id="wind">--</span> m/s</p>
+       <p>Weather: <span id="weather">--</span></p>
+     </section>
+
+     <section class="card">
+       <h3>Temperature (Recent Logs)</h3>
+       <canvas id="tempChart" width="800" height="300"></canvas>
+     </section>
+
+      <a class="box" href="/download_csv">Download CSV</a>
+    </main>
+
+  </div>
+
+  <script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+</body>
+</html>
