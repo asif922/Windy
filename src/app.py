@@ -7,13 +7,23 @@ from dotenv import load_dotenv
 
 load_dotenv()  # loads .env if present
 
-app = Flask(__name__)
+# Determine base dir early and pass it as Flask's instance_path to avoid
+# Flask calling auto_find_instance_path() which may trigger an import path
+# lookup that fails in some environments (AttributeError: pkgutil.get_loader).
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
+app = Flask(__name__, instance_path=BASE_DIR)
+
+# Read API key but don't raise at import time. Instead warn so pages that
+# don't need the key still work; /get_weather will return a clear error.
 API_KEY = os.environ.get("OPENWEATHER_API_KEY")
 if not API_KEY:
-    raise RuntimeError("Set OPENWEATHER_API_KEY env var or put it in .env")
-
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+    try:
+        app.logger.warning(
+            "OPENWEATHER_API_KEY is not set. /get_weather will return an error until the key is provided."
+        )
+    except Exception:
+        print("WARNING: OPENWEATHER_API_KEY is not set. /get_weather will return an error until the key is provided.")
 CSV_FILE = os.path.join(BASE_DIR, "weather_logs.csv")
 FIELDNAMES = ["timestamp", "city", "temp", "humidity", "pressure", "wind_speed", "weather"]
 
@@ -67,6 +77,9 @@ def get_weather():
     city = request.args.get("city", "").strip()
     if not city:
         return jsonify({"status": "error", "message": "City is required"}), 400
+
+    if not API_KEY:
+        return jsonify({"status": "error", "message": "Server missing OPENWEATHER_API_KEY. Set environment variable or .env."}), 500
 
     url = f"https://api.openweathermap.org/data/2.5/weather"
     params = {"q": city, "appid": API_KEY, "units": "metric"}

@@ -3,6 +3,7 @@
 <head>
   <meta charset="utf-8">
   <title>Windy</title>
+  <link rel="icon" href="{{ url_for('static', filename='images/logo.jpg') }}" type="image/jpg">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body class ="page-body">
@@ -15,9 +16,9 @@
       <h1 class="header-title">WINDY</h1>
       <div class="header-right">
         <nav class="nav-bar">
-          <a href="{{ url_for('index') }}" class="nav-link">Home</a>
-          <a href="{{ url_for('dashboard') }}" class="nav-link">Dashboard</a>
-          <a href="{{ url_for('logs') }}" class="nav-link active">Logs</a>
+          <a href="{{ url_for('index') }}" class="nav-link"><span></span>Home</a>
+          <a href="{{ url_for('dashboard') }}" class="nav-link"><span></span>Dashboard</a>
+          <a href="{{ url_for('logs') }}" class="nav-link active"><span></span>Logs</a>
         </nav>
       </div>
     </header>
