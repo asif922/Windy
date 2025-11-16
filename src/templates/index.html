@@ -19,6 +19,7 @@
           <a href="{{ url_for('index') }}" class="nav-link active"><span></span>Home</a>
           <a href="{{ url_for('dashboard') }}" class="nav-link"><span></span>Dashboard</a>
           <a href="{{ url_for('logs') }}" class="nav-link"><span></span>Logs</a>
+          <button id="logoutBtn" class="logout-btn">Logout</button>
         </nav>
       </div>
     </header>
@@ -41,6 +42,7 @@
   </div>
 
   <!-- External JS -->
-  <script src="{{ url_for('static', filename='js/index.js') }}"></script>
+  <script type="module" src="{{ url_for('static', filename='js/firebaseConfig.js') }}"></script>
+  <script type="module" src="{{ url_for('static', filename='js/index.js') }}"></script>
 </body>
 </html>

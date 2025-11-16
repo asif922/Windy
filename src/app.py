@@ -63,6 +63,10 @@ else:
 def index():
     return render_template("index.html")
 
+@app.route("/auth")
+def auth():
+    return render_template("auth.html")
+
 @app.route("/dashboard")
 def dashboard():
     return render_template("dashboard.html")
@@ -70,6 +74,42 @@ def dashboard():
 @app.route("/logs")
 def logs():
     return render_template("logs.html")
+
+# Fetch weather for coordinates (server keeps API key secret)
+@app.route("/get_weather_coords", methods=["GET"])
+def get_weather_coords():
+    lat = request.args.get("lat", "").strip()
+    lon = request.args.get("lon", "").strip()
+    if not lat or not lon:
+        return jsonify({"status": "error", "message": "Coordinates required"}), 400
+
+    if not API_KEY:
+        return jsonify({"status": "error", "message": "Server missing OPENWEATHER_API_KEY"}), 500
+
+    url = f"https://api.openweathermap.org/data/2.5/weather"
+    params = {"lat": lat, "lon": lon, "appid": API_KEY, "units": "metric"}
+    resp = requests.get(url, params=params, timeout=10)
+    data = resp.json()
+
+    if resp.status_code != 200:
+        return jsonify({"status": "error", "message": data.get("message", "Could not fetch")}), 400
+
+    log = {
+        "timestamp": datetime.utcnow().isoformat(),
+        "city": data.get("name", "Unknown"),
+        "temp": data["main"]["temp"],
+        "humidity": data["main"]["humidity"],
+        "pressure": data["main"]["pressure"],
+        "wind_speed": data.get("wind", {}).get("speed", ""),
+        "weather": data["weather"][0]["description"] if data.get("weather") else ""
+    }
+
+    # Append to CSV
+    with open(CSV_FILE, mode="a", newline="", encoding="utf-8") as f:
+        writer = csv.DictWriter(f, fieldnames=FIELDNAMES)
+        writer.writerow(log)
+
+    return jsonify({"status": "success", "data": log})
 
 # Fetch weather for a city, save to CSV, and return JSON
 @app.route("/get_weather", methods=["GET"])

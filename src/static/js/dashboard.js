@@ -47,7 +47,8 @@ async function refreshUI() {
   if (logs.length > 0) {
     renderLatest(logs[0]);
   }
-  renderChart(logs.slice(0, 50).reverse()); // show latest up to 50
+  // Show only the latest 10 logs
+  renderChart(logs.slice(0, 15).reverse());
 }
 
 document.getElementById("fetchBtn").addEventListener("click", async () => {

@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Windy</title>
+  <link rel="icon" href="{{ url_for('static', filename='images/logo.jpg') }}" type="image/jpg">
+
+  <!-- your existing CSS -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <!-- Firebase JS SDKs (modular version) -->
+  <script type="module" src="{{ url_for('static', filename='js/firebaseConfig.js') }}"></script>
+</head>
+<body>
+
+  <div class="auth-container">
+    <div class="auth-forms">
+      <div class="card auth-card">
+        <div class="form-switch">
+          <button class="switch-btn active" id="login-tab">Log in</button>
+          <button class="switch-btn" id="signup-tab">Sign Up</button>
+        </div>
+
+        <!-- Login Form -->
+        <div id="login-form-container">
+          <h2>Log in</h2>
+
+          <form id="login-form">
+            <div class="form-row">
+              <label for="login-email">Email</label>
+              <input type="email" id="login-email" required placeholder="you@example.com">
+            </div>
+
+            <div class="form-row">
+              <label for="login-password">Password</label>
+              <input type="password" id="login-password" required placeholder="at least 6 characters">
+            </div>
+
+            <div class="form-row">
+              <button type="submit" class="btn primary">Log in</button>
+            </div>
+
+            <div class="divider">or</div>
+
+            <div class="social-buttons">
+              <button id="google-login" class="btn social">Sign in with Google</button>
+              <button id="microsoft-login" class="btn social">Sign in with Microsoft</button>
+            </div>
+
+            <p class="message" id="login-message"></p>
+          </form>
+
+          <div class="extra">
+            <a href="#" id="forgot-password">Forgot password?</a>
+          </div>
+        </div>
+
+        <!-- Signup Form -->
+        <div id="signup-form-container" class="hidden">
+          <h2>Sign Up</h2>
+
+          <form id="signup-form">
+            <div class="form-row">
+              <label for="signup-name">Full Name</label>
+              <input type="text" id="signup-name" placeholder="Your name (for profile)">
+            </div>
+
+            <div class="form-row">
+              <label for="signup-email">Email</label>
+              <input type="email" id="signup-email" required placeholder="you@example.com">
+            </div>
+
+            <div class="form-row">
+              <label for="signup-password">Password</label>
+              <input type="password" id="signup-password" required placeholder="at least 6 characters">
+            </div>
+
+            <div class="form-row">
+              <button type="submit" class="btn primary">Create account</button>
+            </div>
+
+            <div class="divider">or</div>
+
+            <div class="social-buttons">
+              <button id="google-signup" class="btn social">Sign in with Google</button>
+              <button id="microsoft-signup" class="btn social">Sign in with Microsoft</button>
+            </div>
+
+            <p class="message" id="signup-message"></p>
+          </form>
+        </div>
+      </div>
+
+  <!-- Auth logic -->
+  <script type="module" src="{{ url_for('static', filename='js/auth.js') }}"></script>
+</body>
+</html>

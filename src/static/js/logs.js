@@ -1,6 +1,29 @@
 async function fetchAndRenderLogs() {
   const res = await fetch("/get_logs");
   const logs = await res.json();
+  // Show only the latest 10 logs initially
+  const latestLogs = logs.slice(0, 10);
+  renderLogs(latestLogs);
+
+  // search filter
+  document.getElementById("search").addEventListener("input", (e) => {
+    const q = e.target.value.toLowerCase();
+    if (q === "") {
+      // If no search query, show latest 10
+      renderLogs(latestLogs);
+    } else {
+      // Filter all logs and show only the latest 10 that match
+      const filteredLogs = logs.filter(log => {
+        const logText = `${new Date(log.timestamp).toLocaleString()} ${log.city} ${log.temp} ${log.humidity} ${log.pressure} ${log.wind_speed} ${log.weather}`.toLowerCase();
+        return logText.includes(q);
+      });
+      const logsToShow = filteredLogs.slice(0, 10);
+      renderLogs(logsToShow);
+    }
+  });
+}
+
+function renderLogs(logsToShow) {
   const container = document.getElementById("logsTable");
   container.innerHTML = "";
 
@@ -11,7 +34,7 @@ async function fetchAndRenderLogs() {
   table.appendChild(thead);
 
   const tbody = document.createElement("tbody");
-  logs.forEach(log => {
+  logsToShow.forEach(log => {
     const tr = document.createElement("tr");
     tr.innerHTML = `
       <td>${new Date(log.timestamp).toLocaleString()}</td>
@@ -26,14 +49,6 @@ async function fetchAndRenderLogs() {
   });
   table.appendChild(tbody);
   container.appendChild(table);
-
-  // search filter
-  document.getElementById("search").addEventListener("input", (e) => {
-    const q = e.target.value.toLowerCase();
-    Array.from(tbody.querySelectorAll("tr")).forEach(row => {
-      row.style.display = row.innerText.toLowerCase().includes(q) ? "" : "none";
-    });
-  });
 }
 
 fetchAndRenderLogs();
