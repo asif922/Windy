@@ -52,3 +52,8 @@ Thumbs.db
 dist/
 build/
 .cache/
+
+#Ignore sensitive json file 
+*.json
+!package.json
+!package-lock.json
